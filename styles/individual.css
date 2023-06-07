@@ -1,0 +1,46 @@
+/* HTML Selectors */
+article {
+    margin: 10px;
+}
+
+body {
+    font-family: 'Kalam', cursive;
+    background: azure;
+}
+
+footer {
+    background-color: gray;
+    color: wheat;
+    padding: 5px;
+    text-align: center;
+}
+
+header {
+    margin: auto;
+    text-align: center;
+}
+
+main 
+{
+    text-align: center;
+}
+
+table
+{
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 3px solid black;
+    border-color: #f1f1f1;
+}
+
+
+/* Media Queries */
+@media only screen and (min-width: 32.5em) {
+
+    
+}
+
+@media only screen and (min-width: 64em) {
+   
+}

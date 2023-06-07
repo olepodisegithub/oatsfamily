@@ -1,0 +1,77 @@
+/* HTML Selectors */
+article {
+    margin: 10px;
+}
+
+body {
+    font-family: 'Kalam', cursive;
+}
+
+div {
+    margin: 10px;
+    text-align: center;
+}
+
+footer {
+    background-color: gray;
+    color: wheat;
+    padding: 5px;
+    text-align: center;
+}
+
+header {
+    margin: auto;
+    text-align: center;
+}
+
+img {
+    width: 80%;
+    height: auto;
+}
+
+label {
+    display: inline-block;
+    min-width: 120px;
+    text-align: right;
+}
+
+main {
+    text-align: center;
+}
+
+h5,h6
+{
+    text-align:center;
+}
+
+h3
+{
+    color:forestgreen;
+}
+
+a
+{
+    font-size: 10px;
+    color:gainsboro;
+}
+
+#spouse,#families,#individual,#children,#parents,#siblings,#mmemogolo,#rremogolo,#mmangwane,#rrangwane,#malome,#rakgadi,#setlogolo,#ntsalae,#nkukuntatemogolo,#mogolwagolwane,#banababana,#dikokomane {
+    display: grid;
+    grid-template-columns: 1fr;
+    color:green;
+    border: 3px solid #f1f1f1;
+}
+
+/* Media Queries */
+@media only screen and (min-width: 32.5em) {
+
+    #spouse,#families,#individual,#children,#parents,#siblings,#mmemogolo,#rremogolo,#mmangwane,#rrangwane,#malome,#rakgadi,#setlogolo,#ntsalae,#nkukuntatemogolo,#mogolwagolwane,#banababana,#dikokomane {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media only screen and (min-width: 64em) {
+    #spouse,#families,#individual,#children,#parents,#siblings,#mmemogolo,#rremogolo,#mmangwane,#rrangwane,#malome,#rakgadi,#setlogolo,#ntsalae,#nkukuntatemogolo,#mogolwagolwane,#banababana,#dikokomane {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
