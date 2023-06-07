@@ -92,7 +92,7 @@ function displayElement(families,displayelement,countlevel)
 
 function OpenWebpage()
 {
-  window.open("individual.html","_self");
+  window.open("Individual.html","_self");
 }
 
 function csvToKeyValueArray(csvString) 
