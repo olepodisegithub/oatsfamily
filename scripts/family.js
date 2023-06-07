@@ -76,7 +76,7 @@ function displayElement(families,displayelement,countlevel)
         const para = document.createElement("p")
         const alink = document.createElement("a")
         alink.addEventListener("click", OpenWebpage)
-        alink.innerHTML = "Add/View/ Update Details"
+        alink.innerHTML = "View Details"
         para.appendChild(alink)
         art.appendChild(para)
                 
@@ -92,6 +92,7 @@ function displayElement(families,displayelement,countlevel)
 
 function OpenWebpage()
 {
+  sessionStorage.setItem("favoriteMovie", "Shrek")
   window.open("Individual.html","_self");
 }
 
