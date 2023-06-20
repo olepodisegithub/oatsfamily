@@ -28,20 +28,25 @@ function displayElement(families,displayelement,countlevel)
 
         const art = document.createElement("article")
         art.style.backgroundColor = "azure";
+
         const name = document.createElement("h5")
         name.innerText = item.Name + ", (" + item.Gender + ")"
+        name.Name = "Individual:" + item.IndividualID
 
         const mother = document.createElement("h6")
         mothername = getIndividualNameByID(item.MotherID)
         mother.innerText = mothername + ", (Mother)"
+        mother.Name = "Mother:" + item.MotherID
 
         const father = document.createElement("h6")
         fathername = getIndividualNameByID(item.FatherID)
         father.innerText = fathername + ", (Father)"
+        father.Name = "Father:" + item.FatherID
 
         const spouse = document.createElement("h6")
         spousename = getIndividualNameByID(item.HusbandWifeID)
         spouse.innerText = spousename + ", (Spouse)"
+        spouse.Name = "Spouse:" + item.HusbandWifeID
 
         const level = document.createElement("level")
         level.innerText = countlevel
@@ -93,6 +98,7 @@ function displayElement(families,displayelement,countlevel)
 function OpenWebpage()
 {
   sessionStorage.setItem("favoriteMovie", "Shrek")
+
   window.open("Individual.html","_self");
 }
 
