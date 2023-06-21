@@ -80,7 +80,16 @@ function displayElement(families,displayelement,countlevel)
 
         const para = document.createElement("p")
         const alink = document.createElement("a")
-        alink.addEventListener("click", OpenWebpage)
+        alink.Name = indid + ':' + motherid + ':' + fatherid + ':' + spouseid + ':' + Date.now
+
+        alink.addEventListener("click", function(e)
+        {
+          //var element = link
+          sessionStorage.setItem("elementname", e.target.id)
+        
+          window.open("Individual.html","_self");
+        })
+
         alink.innerHTML = "View Details"
         para.appendChild(alink)
         art.appendChild(para)
@@ -97,7 +106,8 @@ function displayElement(families,displayelement,countlevel)
 
 function OpenWebpage()
 {
-  sessionStorage.setItem("favoriteMovie", "Shrek")
+  //var element = link
+  sessionStorage.setItem("elementname", 'Oaitse')
 
   window.open("Individual.html","_self");
 }
