@@ -80,12 +80,12 @@ function displayElement(families,displayelement,countlevel)
 
         const para = document.createElement("p")
         const alink = document.createElement("a")
-        alink.Name = indid + ':' + motherid + ':' + fatherid + ':' + spouseid + ':' + Date.now
+        alink.Name = indid + ':' + motherid + ':' + fatherid + ':' + spouseid
 
-        alink.addEventListener("click", function(e)
+        alink.addEventListener("click", function(event)
         {
           //var element = link
-          sessionStorage.setItem("elementname", e.target.id)
+          sessionStorage.setItem("familyids", event.target.Name)
         
           window.open("Individual.html","_self");
         })
@@ -102,14 +102,6 @@ function displayElement(families,displayelement,countlevel)
 
         countindividuals = countindividuals + 1
     }
-}
-
-function OpenWebpage()
-{
-  //var element = link
-  sessionStorage.setItem("elementname", 'Oaitse')
-
-  window.open("Individual.html","_self");
 }
 
 function csvToKeyValueArray(csvString) 
@@ -149,6 +141,9 @@ fetch('family.csv')
   .then(function(csvString) 
   {
     listoffamilies = csvToKeyValueArray(csvString);
+
+    sessionStorage.setItem('familydetails', JSON.stringify(listoffamilies))
+
     reset("families")
     displayElement(listoffamilies,"families","")
   })
