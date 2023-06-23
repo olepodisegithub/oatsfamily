@@ -23,7 +23,7 @@ function displayElement(families,displayelement,countlevel)
           indid = item.IndividualID
           motherid = item.MotherID
           fatherid = item.FatherID
-          spouseid = item.HusbandWifeID
+          spouseid = item.SpouseID
         }
 
         const art = document.createElement("article")
@@ -44,9 +44,9 @@ function displayElement(families,displayelement,countlevel)
         father.Name = "Father:" + item.FatherID
 
         const spouse = document.createElement("h6")
-        spousename = getIndividualNameByID(item.HusbandWifeID)
+        spousename = getIndividualNameByID(item.SpouseID)
         spouse.innerText = spousename + ", (Spouse)"
-        spouse.Name = "Spouse:" + item.HusbandWifeID
+        spouse.Name = "Spouse:" + item.SpouseID
 
         const level = document.createElement("level")
         level.innerText = countlevel
@@ -80,12 +80,11 @@ function displayElement(families,displayelement,countlevel)
 
         const para = document.createElement("p")
         const alink = document.createElement("a")
-        alink.Name = indid + ':' + motherid + ':' + fatherid + ':' + spouseid
+        alink.Name = indid
 
         alink.addEventListener("click", function(event)
         {
-          //var element = link
-          sessionStorage.setItem("familyids", event.target.Name)
+          saveSessionDetails(event.target.Name)
         
           window.open("Individual.html","_self");
         })
@@ -102,6 +101,36 @@ function displayElement(families,displayelement,countlevel)
 
         countindividuals = countindividuals + 1
     }
+}
+
+function saveSessionDetails(individualid)
+{
+
+  let indvidualdetails = []
+  
+  indvidualdetails = listoffamilies.filter(family => family.IndividualID.includes(individualid))
+
+  console.log("here " + indvidualdetails[0].IndividualID + " " + individualid)
+
+  sessionStorage.setItem("IndividualID", indvidualdetails[0].IndividualID)
+  sessionStorage.setItem("Name", indvidualdetails[0].Name)
+  sessionStorage.setItem("FirstName", indvidualdetails[0].FirstName)
+  sessionStorage.setItem("OtherNames", indvidualdetails[0].OtherNames)
+  sessionStorage.setItem("MaidenSurname", indvidualdetails[0].MaidenSurname)
+  sessionStorage.setItem("Gender", indvidualdetails[0].Gender)
+  sessionStorage.setItem("DateOfBirth", indvidualdetails[0].DateOfBirth)
+  sessionStorage.setItem("PlaceOfBirth", indvidualdetails[0].PlaceOfBirth)
+  sessionStorage.setItem("Status", indvidualdetails[0].Status)
+  sessionStorage.setItem("BirthOrder", indvidualdetails[0].BirthOrder)
+  sessionStorage.setItem("MotherID", indvidualdetails[0].MotherID)
+  sessionStorage.setItem("FatherID", indvidualdetails[0].FatherID)
+  sessionStorage.setItem("SpouseID", indvidualdetails[0].SpouseID)
+  sessionStorage.setItem("DateOfMarriage", indvidualdetails[0].DateOfMarriage)
+  sessionStorage.setItem("PlaceOfMarriage", indvidualdetails[0].IndivPlaceOfMarriageidualID)
+  sessionStorage.setItem("ChildrenCount", indvidualdetails[0].ChildrenCount)
+  sessionStorage.setItem("SiblingsCount", indvidualdetails[0].SiblingsCount)
+  sessionStorage.setItem("ContactPerson", indvidualdetails[0].ContactPerson)
+  sessionStorage.setItem("ContactDetails", indvidualdetails[0].ContactDetails)
 }
 
 function csvToKeyValueArray(csvString) 
@@ -142,7 +171,7 @@ fetch('family.csv')
   {
     listoffamilies = csvToKeyValueArray(csvString);
 
-    sessionStorage.setItem('familydetails', JSON.stringify(listoffamilies))
+    //sessionStorage.setItem('familydetails', JSON.stringify(listoffamilies))
 
     reset("families")
     displayElement(listoffamilies,"families","")
