@@ -31,22 +31,22 @@ function displayElement(families,displayelement,countlevel)
 
         const name = document.createElement("h5")
         name.innerText = item.Name + ", (" + item.Gender + ")"
-        name.Name = "Individual:" + item.IndividualID
+        name.Name = item.IndividualID
 
         const mother = document.createElement("h6")
         mothername = getIndividualNameByID(item.MotherID)
         mother.innerText = mothername + ", (Mother)"
-        mother.Name = "Mother:" + item.MotherID
+        mother.Name = item.MotherID
 
         const father = document.createElement("h6")
         fathername = getIndividualNameByID(item.FatherID)
         father.innerText = fathername + ", (Father)"
-        father.Name = "Father:" + item.FatherID
+        father.Name = item.FatherID
 
         const spouse = document.createElement("h6")
         spousename = getIndividualNameByID(item.SpouseID)
         spouse.innerText = spousename + ", (Spouse)"
-        spouse.Name = "Spouse:" + item.SpouseID
+        spouse.Name = item.SpouseID
 
         const level = document.createElement("level")
         level.innerText = countlevel
@@ -56,16 +56,17 @@ function displayElement(families,displayelement,countlevel)
         imag.setAttribute("alt",item.Name)
 
         name.addEventListener("click", function(e) {
-          displayFamilyDetails(e.target.innerText);
+          //displayFamilyDetails(e.target.innerText);
+          displayFamilyDetails(e.target.Name);
          })
         mother.addEventListener("click", function(e) {
-          displayFamilyDetails(e.target.innerText);
+          displayFamilyDetails(e.target.Name);
          })
         father.addEventListener("click", function(e) {
-          displayFamilyDetails(e.target.innerText);
+          displayFamilyDetails(e.target.Name);
          })
          spouse.addEventListener("click", function(e) {
-          displayFamilyDetails(e.target.innerText);
+          displayFamilyDetails(e.target.Name);
          })
 
         art.appendChild(name)
@@ -124,7 +125,7 @@ function saveSessionDetails(individualid)
   sessionStorage.setItem("FatherID", indvidualdetails[0].FatherID)
   sessionStorage.setItem("SpouseID", indvidualdetails[0].SpouseID)
   sessionStorage.setItem("DateOfMarriage", indvidualdetails[0].DateOfMarriage)
-  sessionStorage.setItem("PlaceOfMarriage", indvidualdetails[0].IndivPlaceOfMarriageidualID)
+  sessionStorage.setItem("PlaceOfMarriage", indvidualdetails[0].PlaceOfMarriage)
   sessionStorage.setItem("ChildrenCount", indvidualdetails[0].ChildrenCount)
   sessionStorage.setItem("SiblingsCount", indvidualdetails[0].SiblingsCount)
   sessionStorage.setItem("ContactPerson", indvidualdetails[0].ContactPerson)
@@ -264,16 +265,14 @@ function filterBy()
 document.getElementById("filterButton").addEventListener("click", filterBy)
 document.getElementById("filterText").addEventListener("input", filterBy)
 
-function displayFamilyDetails(nameandmore)
+function displayFamilyDetails(searchid)
 {
-  let names = nameandmore.split(",")
-  
-  document.getElementById("filterText").value = names[0]
+  document.getElementById("filterText").value = ""
   
   reset("families")
 
   //individual
-  filterIndividual(names[0],"individual","Nna")
+  filterIndividual(searchid,"individual","Nna")
   document.getElementById("h3" + "individual").innerText = "Nna"
 
   myname = getIndividualNameByID(indid)
@@ -701,7 +700,7 @@ function filterIndividual(namesearch,element,displaytext)
 {
   reset(element)
   
-  displayElement(listoffamilies.filter(family => String(family.FirstName.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.OtherNames.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.MaidenSurname.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase())),element,"")
+  displayElement(listoffamilies.filter(family => String(family.IndividualID.toLocaleLowerCase()) == namesearch.toLocaleLowerCase()),element,"")
 }
 
 function getIndividualNameByID(id)
