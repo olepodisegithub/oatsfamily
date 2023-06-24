@@ -1,5 +1,5 @@
 IndividualID,Name,FirstName,OtherNames,MaidenSurname,Gender,DateOfBirth,PlaceOfBirth,Status,BirthOrder,MotherID,FatherID,SpouseID,DateOfMarriage,PlaceOfMarriage,ChildrenCount,SiblingsCount,ContactPerson,ContactDetails,Photo,Username,Password,EndCol
-1,Oaitse Setogo Mabizela Lepodise,Oaitse,Setogo Mabizela,Lepodise,Male,,,,,4,5,2,,,,,,,images/oaitse.jpg,olepodise,MyTh@b3l0,EndCol
+1,Oaitse Setogo Mabizela Lepodise,Oaitse,Setogo Mabizela,Lepodise,Male,29-Dec-86,Diphale,Alive,1,4,5,2,01-Jul-16,Lesotho Maseru,2,6,Self,75703839,images/oaitse.jpg,olepodise,MyTh@b3l0,EndCol
 2,Ntsebo Clementina Ramaisa,Ntsebo,Clementina,Ramaisa,Female,,,,,13,0,1,,,,,,,images/ntsebo.jpg,,,EndCol
 3,Thabelo Gift Lepodise,Thabelo,Gift,Lepodise,Female,,,,,2,1,0,,,,,,,images/thabelo.jpg,,,EndCol
 4,Ncheledi  Lepodisi,Ncheledi,,Lepodisi,Female,,,,,14,15,20,,,,,,,images/placeholder.png,,,EndCol

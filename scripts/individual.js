@@ -1,3 +1,12 @@
 
 document.getElementById('firstname').value = sessionStorage.getItem("FirstName")
-
+document.getElementById('othernames').value = sessionStorage.getItem("OtherNames")
+document.getElementById('maidensurname').value = sessionStorage.getItem("MaidenSurname")
+document.getElementById('gender').value = sessionStorage.getItem("Gender")
+document.getElementById('dobtext').value = sessionStorage.getItem("DateOfBirth")
+document.getElementById('pob').value = sessionStorage.getItem("PlaceOfBirth")
+document.getElementById('status').value = sessionStorage.getItem("Status")
+document.getElementById('birthorder').value = sessionStorage.getItem("BirthOrder")
+document.getElementById('mother').value = sessionStorage.getItem("MotherID")
+document.getElementById('father').value = sessionStorage.getItem("FatherID")
+document.getElementById('spouse').value = sessionStorage.getItem("SpouseID")
