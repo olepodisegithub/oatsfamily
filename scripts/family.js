@@ -130,6 +130,9 @@ function saveSessionDetails(individualid)
   sessionStorage.setItem("SiblingsCount", indvidualdetails[0].SiblingsCount)
   sessionStorage.setItem("ContactPerson", indvidualdetails[0].ContactPerson)
   sessionStorage.setItem("ContactDetails", indvidualdetails[0].ContactDetails)
+  sessionStorage.setItem("MotherName", getIndividualNameByID(indvidualdetails[0].MotherID))
+  sessionStorage.setItem("FatherName", getIndividualNameByID(indvidualdetails[0].FatherID))
+  sessionStorage.setItem("SpouseName", getIndividualNameByID(indvidualdetails[0].SpouseID))
 }
 
 function csvToKeyValueArray(csvString) 
@@ -259,6 +262,7 @@ function filterBy()
   countindividuals = 0
 
   var inputText = document.getElementById("filterText").value
+  console.log(inputText)
   displayElement(listoffamilies.filter(family => String(family.FirstName.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.OtherNames.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.MaidenSurname.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase())),"families","")
 }
 
@@ -707,10 +711,17 @@ function getIndividualNameByID(id)
 {
 
   let name = ""
-  let motherresult = listoffamilies.filter(family => family.IndividualID === id)
-  if (motherresult.length > 0)
+  let searchresult = listoffamilies.filter(family => family.IndividualID === id)
+  if (searchresult.length > 0)
   {
-    name = motherresult[0].Name
+    if (searchresult[0].OtherNames.length > 0)
+    {
+      name = searchresult[0].FirstName + " " + searchresult[0].OtherNames  + " " + searchresult[0].MaidenSurname
+    }
+    else
+    {
+      name = searchresult[0].FirstName + " " + searchresult[0].MaidenSurname
+    }
   }
   return name
 }
