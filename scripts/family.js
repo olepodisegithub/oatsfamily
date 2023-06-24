@@ -110,8 +110,6 @@ function saveSessionDetails(individualid)
   
   indvidualdetails = listoffamilies.filter(family => family.IndividualID.includes(individualid))
 
-  console.log("here " + indvidualdetails[0].IndividualID + " " + individualid)
-
   sessionStorage.setItem("IndividualID", indvidualdetails[0].IndividualID)
   sessionStorage.setItem("Name", indvidualdetails[0].Name)
   sessionStorage.setItem("FirstName", indvidualdetails[0].FirstName)
@@ -260,7 +258,7 @@ function filterBy()
   countindividuals = 0
 
   var inputText = document.getElementById("filterText").value
-  displayElement(listoffamilies.filter(family => String(family.Name.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase())),"families","")
+  displayElement(listoffamilies.filter(family => String(family.FirstName.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.OtherNames.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.MaidenSurname.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase())),"families","")
 }
 
 document.getElementById("filterButton").addEventListener("click", filterBy)
@@ -703,7 +701,7 @@ function filterIndividual(namesearch,element,displaytext)
 {
   reset(element)
   
-  displayElement(listoffamilies.filter(family => String(family.Name.toLocaleLowerCase()).includes(namesearch.toLocaleLowerCase())),element,"")
+  displayElement(listoffamilies.filter(family => String(family.FirstName.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.OtherNames.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.MaidenSurname.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase())),element,"")
 }
 
 function getIndividualNameByID(id)
