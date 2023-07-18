@@ -1,3 +1,4 @@
+
 let firstname = ""
 let othernames = ""
 let maidensurname = ""
@@ -64,18 +65,17 @@ function SaveDetailsToFIle()
 
     alldetails = firstname+","+othernames+","+maidensurname+","+gender+","+dobtext+","+pob+","+status+","+birthorder+","+motherid+","+fatherid+","+spouseid+","+domtext+","+pom+","+childrencount+","+siblingscount+","+contactperson+","+contactdetails
 
-    const fs = require('fs');
+    const fs = require('fs')
 
-    fs.writeFile('ChangesFile', alldetails, err => 
+    fs.appendFile('family.csv', alldetails, (err) => 
+    {
+        if (err) 
         {
-            if (err) 
-            {
-                console.error(err)
-            }
-            else 
-            {
-                console.log('Data written to file successfully.')
-            }
+            throw err;
         }
-    )
+        else
+        {
+            console.log('Data appended to file')
+        } 
+    });
 }

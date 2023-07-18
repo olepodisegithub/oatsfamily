@@ -12,7 +12,7 @@ let stringforlist = ""
 let proceed = true
 let countindividuals = 0
 
-function displayElement(families,displayelement,countlevel)
+function displayElement(families,displayelement,countlevel,displayviewlink)
 {
     families.map(createIndividualElement)
 
@@ -79,20 +79,23 @@ function displayElement(families,displayelement,countlevel)
           art.appendChild(level)
         }
 
-        const para = document.createElement("p")
-        const alink = document.createElement("a")
-        alink.Name = indid
-
-        alink.addEventListener("click", function(event)
+        if (displayviewlink === "Yes")
         {
-          saveSessionDetails(event.target.Name)
-        
-          window.open("Individual.html","_self");
-        })
-
-        alink.innerHTML = "View Details"
-        para.appendChild(alink)
-        art.appendChild(para)
+          const para = document.createElement("p")
+          const alink = document.createElement("a")
+          alink.Name = item.IndividualID
+  
+          alink.addEventListener("click", function(event)
+          {
+            saveSessionDetails(event.target.Name)
+          
+            window.open("Individual.html","_self");
+          })
+  
+          alink.innerHTML = "View Details"
+          para.appendChild(alink)
+          art.appendChild(para)
+        }
                 
         if (document.getElementById("displayoption").checked == true)
         {
@@ -176,7 +179,7 @@ fetch('family.csv')
     //sessionStorage.setItem('familydetails', JSON.stringify(listoffamilies))
 
     reset("families")
-    displayElement(listoffamilies,"families","")
+    displayElement(listoffamilies,"families","","No")
   })
   .catch(function(error) 
   {
@@ -263,7 +266,7 @@ function filterBy()
 
   var inputText = document.getElementById("filterText").value
   console.log(inputText)
-  displayElement(listoffamilies.filter(family => String(family.FirstName.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.OtherNames.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.MaidenSurname.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase())),"families","")
+  displayElement(listoffamilies.filter(family => String(family.FirstName.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.OtherNames.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.MaidenSurname.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase())),"families","","Yes")
 }
 
 document.getElementById("filterButton").addEventListener("click", filterBy)
@@ -367,7 +370,7 @@ function filterDikokomane(id,element,displaytext)
   reset(element)
 
   let child = listoffamilies.filter(family => family.MotherID === id || family.FatherID === id)
-  child.map(fam => listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID).map(ch => displayElement(listoffamilies.filter(family => family.MotherID === ch.IndividualID || family.FatherID === ch.IndividualID),element,"")))
+  child.map(fam => listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID).map(ch => displayElement(listoffamilies.filter(family => family.MotherID === ch.IndividualID || family.FatherID === ch.IndividualID),element,"","Yes")))
 }
 
 function filterBanaBaBana(id,element,displaytext)
@@ -375,7 +378,7 @@ function filterBanaBaBana(id,element,displaytext)
   reset(element)
 
   let child = listoffamilies.filter(family => family.MotherID === id || family.FatherID === id)
-  child.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),element,""))
+  child.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),element,"","Yes"))
 }
 
 function filterMogolowagolwane(element,displaytext)
@@ -398,21 +401,21 @@ function filterMogolowagolwane(element,displaytext)
       if (getMotherID(id) > 0 && getFatherID(id) > 0)
       {
         let parents = listoffamilies.filter(family => family.IndividualID === getMotherID(id) || family.IndividualID === getFatherID(id))
-        displayElement(parents,divelement,countthelevels)
+        displayElement(parents,divelement,countthelevels,"Yes")
         proceed = true
         parents.map(fam => addIndividualIDToString(fam.IndividualID))
       }
       else if (getMotherID(id) > 0)
       {
         let parents = listoffamilies.filter(family => family.IndividualID === getMotherID(id))
-        displayElement(parents,divelement,countthelevels)
+        displayElement(parents,divelement,countthelevels,"Yes")
         proceed = true
         parents.map(fam => addIndividualIDToString(fam.IndividualID))
       }
       else if (getFatherID(id) > 0)
       {
         let parents = listoffamilies.filter(family => family.IndividualID === getFatherID(id))
-        displayElement(parents,divelement,countthelevels)
+        displayElement(parents,divelement,countthelevels,"Yes")
         proceed = true
         parents.map(fam => addIndividualIDToString(fam.IndividualID))
       }
@@ -430,21 +433,21 @@ function filterNkukuNtateMogolo(mid,fid,element,displaytext)
     let parents = listoffamilies.filter(family => family.IndividualID === mid || family.IndividualID === fid)
     parents.map(fam => addIndividualIDToString(fam.IndividualID))
     proceed = true
-    displayElement(parents,element,"")
+    displayElement(parents,element,"","Yes")
   }
   else if (mid > 0)
   {
     let parents = listoffamilies.filter(family => family.IndividualID === mid)
     parents.map(fam => addIndividualIDToString(fam.IndividualID))
     proceed = true
-    displayElement(parents,element,"")
+    displayElement(parents,element,"","Yes")
   }
   else if (fid > 0)
   {
     let parents = listoffamilies.filter(family => family.IndividualID === fid)
     parents.map(fam => addIndividualIDToString(fam.IndividualID))
     proceed = true
-    displayElement(parents,element,"")
+    displayElement(parents,element,"","Yes")
   }
 }
 
@@ -468,20 +471,17 @@ function filterNtsalae(mid,fid,myid,element,displaytext)
   if(mid > 0 && fid > 0)
   {
     let siblings = listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,""))
-    //displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement)
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
   }
   else if(mid > 0)
   {
     let siblings = listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,""))
-    //displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement)
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
   }
   else if(fid > 0)
   {
     let siblings = listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,""))
-    //displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement)
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
   }
 }
 
@@ -493,20 +493,17 @@ function filterSetlogolo(mid,fid,myid,element,displaytext)
   if(mid > 0 && fid > 0)
   {
     let siblings = listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,""))
-    //displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement)
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
   }
   else if(mid > 0)
   {
     let siblings = listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,""))
-    //displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement)
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
   }
   else if(fid > 0)
   {
     let siblings = listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,""))
-    //displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement)
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
   }
 }
 
@@ -517,15 +514,15 @@ function filterRakgadi(mid,fid,myid,element,displaytext)
   
   if(mid > 0 && fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement,"")
+    displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement,"","Yes")
   }
   else if(mid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement,"")
+    displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement,"","Yes")
   }
   else if(fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement,"")
+    displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement,"","Yes")
   }
 }
 
@@ -536,15 +533,15 @@ function filterMalome(mid,fid,myid,element,displaytext)
   
   if(mid > 0 && fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male"),divelement,"")
+    displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male"),divelement,"","Yes")
   }
   else if(mid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male"),divelement,"")
+    displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male"),divelement,"","Yes")
   }
   else if(fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male"),divelement,"")
+    displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male"),divelement,"","Yes")
   }
 }
 
@@ -560,15 +557,15 @@ function filterRrangwane(fid,element,displaytext)
   {
     if(fathermotherid > 0 && fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid) || family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid) || family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid)),divelement,"","Yes")
     }
     else if(fathermotherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid)),divelement,"","Yes")
     }
     else if(fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid)),divelement,"","Yes")
     }
   }
 }
@@ -585,15 +582,15 @@ function filterMmangwane(mid,element,displaytext)
   {
     if(fathermotherid > 0 && fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid) || family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid) || family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid)),divelement,"","Yes")
     }
     else if(fathermotherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid)),divelement,"","Yes")
     }
     else if(fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid)),divelement,"","Yes")
     }
   }
 }
@@ -610,15 +607,15 @@ function filterRremogolo(fid,element,displaytext)
   {
     if(fathermotherid > 0 && fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid) || family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid) || family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid)),divelement,"","Yes")
     }
     else if(fathermotherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid)),divelement,"","Yes")
     }
     else if(fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid)),divelement,"","Yes")
     }
   }
 }
@@ -635,15 +632,15 @@ function filterMmemogolo(mid,element,displaytext)
   {
     if(mothermotherid > 0 && motherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid) || family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid) || family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid)),divelement,"","Yes")
     }
     else if(mothermotherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid)),divelement,"","Yes")
     }
     else if(motherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid)),divelement,"")
+      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid)),divelement,"","Yes")
     }
   }
 }
@@ -655,15 +652,15 @@ function filterSiblings(mid,fid,myid,element,displaytext)
 
   if(mid > 0 && fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid),divelement,"")
+    displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid),divelement,"","Yes")
   }
   else if(mid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid),divelement,"")
+    displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid),divelement,"","Yes")
   }
   else if(fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid),divelement,"")
+    displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid),divelement,"","Yes")
   }
 }
 
@@ -674,15 +671,15 @@ function filterParents(mid,fid,element,displaytext)
 
   if (mid > 0 && fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.IndividualID === mid || family.IndividualID === fid),divelement,"")
+    displayElement(listoffamilies.filter(family => family.IndividualID === mid || family.IndividualID === fid),divelement,"","Yes")
   }
   else if (mid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.IndividualID === mid),divelement,"")
+    displayElement(listoffamilies.filter(family => family.IndividualID === mid),divelement,"","Yes")
   }
   else if (fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.IndividualID === fid),divelement,"")
+    displayElement(listoffamilies.filter(family => family.IndividualID === fid),divelement,"","Yes")
   }
 }
 
@@ -690,21 +687,21 @@ function filterChildren(id,element,displaytext)
 {
   reset(element)
   let arraylist = listoffamilies.filter(family => family.MotherID === id || family.FatherID === id)
-  displayElement(arraylist,element,"")
+  displayElement(arraylist,element,"","Yes")
 }
 
 function filterSpouse(id,element,displaytext)
 {
   reset(element)
    
-  displayElement(listoffamilies.filter(family => family.IndividualID === id),element,"")
+  displayElement(listoffamilies.filter(family => family.IndividualID === id),element,"","Yes")
 }
 
 function filterIndividual(namesearch,element,displaytext)
 {
   reset(element)
   
-  displayElement(listoffamilies.filter(family => String(family.IndividualID.toLocaleLowerCase()) == namesearch.toLocaleLowerCase()),element,"")
+  displayElement(listoffamilies.filter(family => String(family.IndividualID.toLocaleLowerCase()) == namesearch.toLocaleLowerCase()),element,"","Yes")
 }
 
 function getIndividualNameByID(id)
