@@ -5,7 +5,7 @@ let maidensurname = ""
 let gender = ""
 let dobtext = ""
 let pob = ""
-let status = ""
+let individualstatus = ""
 let birthorder = ""
 let motherid = ""
 let fatherid = ""
@@ -25,7 +25,7 @@ document.getElementById('maidensurname').value = sessionStorage.getItem("MaidenS
 document.getElementById('gender').value = sessionStorage.getItem("Gender")
 document.getElementById('dobtext').value = sessionStorage.getItem("DateOfBirth")
 document.getElementById('pob').value = sessionStorage.getItem("PlaceOfBirth")
-document.getElementById('status').value = sessionStorage.getItem("Status")
+document.getElementById('status').value = sessionStorage.getItem("IndividualStatus")
 document.getElementById('birthorder').value = sessionStorage.getItem("BirthOrder")
 document.getElementById('motherid').innerText = sessionStorage.getItem("MotherID")
 document.getElementById('fatherid').innerText = sessionStorage.getItem("FatherID")
@@ -51,7 +51,7 @@ function SaveDetailsToFIle()
     gender = document.getElementById('gender').value
     dobtext = document.getElementById('dobtext').value
     pob = document.getElementById('pob').value
-    status = document.getElementById('status').value
+    individualstatus = document.getElementById('status').value
     birthorder = document.getElementById('birthorder').value
     motherid = document.getElementById('motherid').innerText
     fatherid = document.getElementById('fatherid').innerText
@@ -63,19 +63,8 @@ function SaveDetailsToFIle()
     contactperson = document.getElementById('contactperson').value
     contactdetails = document.getElementById('contactdetails').value
 
-    alldetails = firstname+","+othernames+","+maidensurname+","+gender+","+dobtext+","+pob+","+status+","+birthorder+","+motherid+","+fatherid+","+spouseid+","+domtext+","+pom+","+childrencount+","+siblingscount+","+contactperson+","+contactdetails
+    alldetails = firstname+","+othernames+","+maidensurname+","+gender+","+dobtext+","+pob+","+individualstatus+","+birthorder+","+motherid+","+fatherid+","+spouseid+","+domtext+","+pom+","+childrencount+","+siblingscount+","+contactperson+","+contactdetails
 
-    const fs = require('fs')
-
-    fs.appendFile('family.csv', alldetails, (err) => 
-    {
-        if (err) 
-        {
-            throw err;
-        }
-        else
-        {
-            console.log('Data appended to file')
-        } 
-    });
+    window.open("http://127.0.0.1:5500/#/?mydata=" & alldetails,"_self");
+    
 }
