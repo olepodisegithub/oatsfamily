@@ -41,7 +41,7 @@ function csvToKeyValueArray(csvString)
   return result;
 }
 
-fetch('family.csv')
+fetch('scripts/family.csv')
   .then(function(response) 
   {
     return response.text();

@@ -34,7 +34,7 @@ export function getFamilyDetails()
   try
   {
     
-    fetch('family.csv')
+    fetch('scripts/family.csv')
       .then(function(response) 
       {
         return response.text();
