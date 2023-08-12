@@ -1,4 +1,5 @@
 
+let listoffamilies = []
 let firstname = ""
 let othernames = ""
 let maidensurname = ""
@@ -40,16 +41,48 @@ document.getElementById('mother').value = sessionStorage.getItem("MotherName")
 document.getElementById('father').value = sessionStorage.getItem("FatherName")
 document.getElementById('spouse').value = sessionStorage.getItem("SpouseName")
 
-var select = document.getElementById("mother");
-var options = listoffamilies.filter(family => family.Gender === 'Female');
+function csvToKeyValueArray(csvString) 
+{
+  var rows = csvString.split('\n');
 
-for(var i = 0; i < options.length; i++) {
-    var opt = options[i];
-    var el = document.createElement("option");
-    el.textContent = opt;
-    el.value = opt;
-    select.appendChild(el);
+  rows = rows.filter(function(row) 
+  {
+    return row.trim() !== '';
+  });
+
+  var keys = rows[0].split(',');
+
+  var result = [];
+
+  for (var i = 1; i < rows.length; i++) 
+  {
+    var row = rows[i].split(',');
+    var obj = {};
+
+    for (var j = 0; j < keys.length; j++) 
+    {
+      obj[keys[j]] = row[j];
+    }
+
+    result.push(obj);
+  }
+
+  return result;
 }
+
+fetch('scripts/family.csv')
+  .then(function(response) 
+  {
+    return response.text();
+  })
+  .then(function(csvString) 
+  {
+    listoffamilies = csvToKeyValueArray(csvString);
+  })
+  .catch(function(error) 
+  {
+    console.error('Error:', error);
+});
 
 document.getElementById("savebutton").addEventListener("click", SaveDetailsToFIle)
 

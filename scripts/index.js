@@ -1,3 +1,4 @@
+
 let listofindividuals = []
 
 var username = ""
@@ -73,7 +74,7 @@ function OpenWebpage()
 {
     if (login(document.getElementById("username").value,document.getElementById("password").value) === true)
     {
-        window.open("family.html","_self");
+      window.open("family.html","_self");
     }
     else
     {
