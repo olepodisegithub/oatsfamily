@@ -40,6 +40,17 @@ document.getElementById('mother').value = sessionStorage.getItem("MotherName")
 document.getElementById('father').value = sessionStorage.getItem("FatherName")
 document.getElementById('spouse').value = sessionStorage.getItem("SpouseName")
 
+var select = document.getElementById("mother");
+var options = listoffamilies.filter(family => family.Gender === 'Female');
+
+for(var i = 0; i < options.length; i++) {
+    var opt = options[i];
+    var el = document.createElement("option");
+    el.textContent = opt;
+    el.value = opt;
+    select.appendChild(el);
+}
+
 document.getElementById("savebutton").addEventListener("click", SaveDetailsToFIle)
 
 function SaveDetailsToFIle()
@@ -65,6 +76,7 @@ function SaveDetailsToFIle()
 
     alldetails = firstname+","+othernames+","+maidensurname+","+gender+","+dobtext+","+pob+","+individualstatus+","+birthorder+","+motherid+","+fatherid+","+spouseid+","+domtext+","+pom+","+childrencount+","+siblingscount+","+contactperson+","+contactdetails
 
-    window.open("http://127.0.0.1:5500/#/?mydata=" & alldetails,"_self");
+    window.open("http://127.0.0.1:8080/done.html?mydata=" + alldetails,"_self");
+    //window.open("done.html?mydata=" + alldetails,"_self");
     
 }
