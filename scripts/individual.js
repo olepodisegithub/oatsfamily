@@ -20,6 +20,10 @@ let contactdetails = ""
 
 let alldetails = ""
 
+var motherselect = document.createElement("SELECT")
+var fatherselect = document.createElement("SELECT")
+var spouseselect = document.createElement("SELECT")
+
 function csvToKeyValueArray(csvString) 
 {
   var rows = csvString.split('\n');
@@ -57,6 +61,7 @@ fetch('scripts/family.csv')
   .then(function(csvString) 
   {
     listofindividuals = csvToKeyValueArray(csvString);
+    loadDropdownLists()
   })
   .catch(function(error) 
   {
@@ -117,20 +122,59 @@ function SaveDetailsToFIle()
 
 function loadDropdownLists()
 {
-  function addItem(itemName,itemValue,dropdownid)
+  function addItem(itemName,itemValue,selectelement)
   {
-    var x = document.getElementById(dropdownid);
     var option = document.createElement("option");
     option.text = itemName;
     option.value = itemValue
-    x.add(option);
+    selectelement.add(option);
   }
   
   let mothers = listofindividuals.filter(family => family.Gender === "Female")
-  mothers.map(fam => addItem(fam.Name,fam.IndividualID,"mother"))
+  mothers.map(fam => addItem(fam.Name,fam.IndividualID,motherselect))
 
   let fathers = listofindividuals.filter(family => family.Gender === "Male")
-  fathers.map(fam => addItem(fam.Name,fam.IndividualID,"father"))
+  fathers.map(fam => addItem(fam.Name,fam.IndividualID,fatherselect))
 
-  listofindividuals.map(fam => addItem(fam.Name,fam.IndividualID,"spouse"))
+  listofindividuals.map(fam => addItem(fam.Name,fam.IndividualID,spouseselect))
+
+}
+
+document.getElementById("mother").addEventListener("click", displayMotherSelect)
+function displayMotherSelect()
+{
+  if(document.getElementById("motherdropdown").hasChildNodes()) 
+  {
+    document.getElementById("motherdropdown").removeChild(document.getElementById("motherdropdown").childNodes[0]);
+  }
+  else
+  {
+    document.getElementById("motherdropdown").appendChild(motherselect)
+  }
+}
+
+document.getElementById("father").addEventListener("click", displayFatherSelect)
+function displayFatherSelect()
+{
+  if(document.getElementById("fatherdropdown").hasChildNodes()) 
+  {
+    document.getElementById("fatherdropdown").removeChild(document.getElementById("fatherdropdown").childNodes[0]);
+  }
+  else
+  {
+    document.getElementById("fatherdropdown").appendChild(fatherselect)
+  }
+}
+
+document.getElementById("spouse").addEventListener("click", displaySpouseSelect)
+function displaySpouseSelect()
+{
+  if(document.getElementById("spousedropdown").hasChildNodes()) 
+  {
+    document.getElementById("spousedropdown").removeChild(document.getElementById("spousedropdown").childNodes[0]);
+  }
+  else
+  {
+    document.getElementById("spousedropdown").appendChild(spouseselect)
+  }
 }
