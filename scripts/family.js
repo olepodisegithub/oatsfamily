@@ -87,6 +87,8 @@ function displayElement(families,displayelement,countlevel,displayviewlink)
   
           alink.addEventListener("click", function(event)
           {
+            console.log("clicked the link, View Details")
+            console.log(event.target.Name)
             saveSessionDetails(event.target.Name)
           
             window.open("Individual.html","_self");
@@ -112,7 +114,7 @@ function saveSessionDetails(individualid)
 
   let indvidualdetails = []
   
-  indvidualdetails = listoffamilies.filter(family => family.IndividualID.includes(individualid))
+  indvidualdetails = listoffamilies.filter(family => family.IndividualID === individualid)
 
   sessionStorage.setItem("IndividualID", indvidualdetails[0].IndividualID)
   sessionStorage.setItem("Name", indvidualdetails[0].Name)

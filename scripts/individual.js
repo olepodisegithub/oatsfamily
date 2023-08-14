@@ -1,5 +1,5 @@
 
-let listoffamilies = []
+let listofindividuals = []
 let firstname = ""
 let othernames = ""
 let maidensurname = ""
@@ -19,27 +19,6 @@ let contactperson = ""
 let contactdetails = ""
 
 let alldetails = ""
-
-document.getElementById('firstname').value = sessionStorage.getItem("FirstName")
-document.getElementById('othernames').value = sessionStorage.getItem("OtherNames")
-document.getElementById('maidensurname').value = sessionStorage.getItem("MaidenSurname")
-document.getElementById('gender').value = sessionStorage.getItem("Gender")
-document.getElementById('dobtext').value = sessionStorage.getItem("DateOfBirth")
-document.getElementById('pob').value = sessionStorage.getItem("PlaceOfBirth")
-document.getElementById('status').value = sessionStorage.getItem("IndividualStatus")
-document.getElementById('birthorder').value = sessionStorage.getItem("BirthOrder")
-document.getElementById('motherid').innerText = sessionStorage.getItem("MotherID")
-document.getElementById('fatherid').innerText = sessionStorage.getItem("FatherID")
-document.getElementById('spouseid').innerText = sessionStorage.getItem("SpouseID")
-document.getElementById('domtext').value = sessionStorage.getItem("DateOfMarriage")
-document.getElementById('pom').value = sessionStorage.getItem("PlaceOfMarriage")
-document.getElementById('childrencount').value = sessionStorage.getItem("ChildrenCount")
-document.getElementById('siblingscount').value = sessionStorage.getItem("SiblingsCount")
-document.getElementById('contactperson').value = sessionStorage.getItem("ContactPerson")
-document.getElementById('contactdetails').value = sessionStorage.getItem("ContactDetails")
-document.getElementById('mother').value = sessionStorage.getItem("MotherName")
-document.getElementById('father').value = sessionStorage.getItem("FatherName")
-document.getElementById('spouse').value = sessionStorage.getItem("SpouseName")
 
 function csvToKeyValueArray(csvString) 
 {
@@ -77,12 +56,34 @@ fetch('scripts/family.csv')
   })
   .then(function(csvString) 
   {
-    listoffamilies = csvToKeyValueArray(csvString);
+    listofindividuals = csvToKeyValueArray(csvString);
   })
   .catch(function(error) 
   {
     console.error('Error:', error);
 });
+
+
+document.getElementById('firstname').value = sessionStorage.getItem("FirstName")
+document.getElementById('othernames').value = sessionStorage.getItem("OtherNames")
+document.getElementById('maidensurname').value = sessionStorage.getItem("MaidenSurname")
+document.getElementById('gender').value = sessionStorage.getItem("Gender")
+document.getElementById('dobtext').value = sessionStorage.getItem("DateOfBirth")
+document.getElementById('pob').value = sessionStorage.getItem("PlaceOfBirth")
+document.getElementById('status').value = sessionStorage.getItem("IndividualStatus")
+document.getElementById('birthorder').value = sessionStorage.getItem("BirthOrder")
+document.getElementById('motherid').innerText = sessionStorage.getItem("MotherID")
+document.getElementById('fatherid').innerText = sessionStorage.getItem("FatherID")
+document.getElementById('spouseid').innerText = sessionStorage.getItem("SpouseID")
+document.getElementById('domtext').value = sessionStorage.getItem("DateOfMarriage")
+document.getElementById('pom').value = sessionStorage.getItem("PlaceOfMarriage")
+document.getElementById('childrencount').value = sessionStorage.getItem("ChildrenCount")
+document.getElementById('siblingscount').value = sessionStorage.getItem("SiblingsCount")
+document.getElementById('contactperson').value = sessionStorage.getItem("ContactPerson")
+document.getElementById('contactdetails').value = sessionStorage.getItem("ContactDetails")
+document.getElementById('mother').value = sessionStorage.getItem("MotherName")
+document.getElementById('father').value = sessionStorage.getItem("FatherName")
+document.getElementById('spouse').value = sessionStorage.getItem("SpouseName")
 
 document.getElementById("savebutton").addEventListener("click", SaveDetailsToFIle)
 
@@ -112,4 +113,24 @@ function SaveDetailsToFIle()
     window.open("http://127.0.0.1:8080/done.html?mydata=" + alldetails,"_self");
     //window.open("done.html?mydata=" + alldetails,"_self");
     
+}
+
+function loadDropdownLists()
+{
+  function addItem(itemName,itemValue,dropdownid)
+  {
+    var x = document.getElementById(dropdownid);
+    var option = document.createElement("option");
+    option.text = itemName;
+    option.value = itemValue
+    x.add(option);
+  }
+  
+  let mothers = listofindividuals.filter(family => family.Gender === "Female")
+  mothers.map(fam => addItem(fam.Name,fam.IndividualID,"mother"))
+
+  let fathers = listofindividuals.filter(family => family.Gender === "Male")
+  fathers.map(fam => addItem(fam.Name,fam.IndividualID,"father"))
+
+  listofindividuals.map(fam => addItem(fam.Name,fam.IndividualID,"spouse"))
 }
