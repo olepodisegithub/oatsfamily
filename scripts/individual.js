@@ -1,5 +1,7 @@
 
 let listofindividuals = []
+let individualid = ""
+let names = ""
 let firstname = ""
 let othernames = ""
 let maidensurname = ""
@@ -68,7 +70,7 @@ fetch('scripts/family.csv')
     console.error('Error:', error);
 });
 
-
+individualid = sessionStorage.getItem("IndividualID")
 document.getElementById('firstname').value = sessionStorage.getItem("FirstName")
 document.getElementById('othernames').value = sessionStorage.getItem("OtherNames")
 document.getElementById('maidensurname').value = sessionStorage.getItem("MaidenSurname")
@@ -89,6 +91,10 @@ document.getElementById('contactdetails').value = sessionStorage.getItem("Contac
 document.getElementById('mother').value = sessionStorage.getItem("MotherName")
 document.getElementById('father').value = sessionStorage.getItem("FatherName")
 document.getElementById('spouse').value = sessionStorage.getItem("SpouseName")
+
+document.getElementById("mother").readOnly  = true
+document.getElementById("father").readOnly  = true
+document.getElementById("spouse").readOnly  = true
 
 document.getElementById("savebutton").addEventListener("click", SaveDetailsToFIle)
 
@@ -113,7 +119,8 @@ function SaveDetailsToFIle()
     contactperson = document.getElementById('contactperson').value
     contactdetails = document.getElementById('contactdetails').value
 
-    alldetails = firstname+","+othernames+","+maidensurname+","+gender+","+dobtext+","+pob+","+individualstatus+","+birthorder+","+motherid+","+fatherid+","+spouseid+","+domtext+","+pom+","+childrencount+","+siblingscount+","+contactperson+","+contactdetails
+    names = firstname+" "+othernames+" "+maidensurname+" "+firstname
+    alldetails = individualid+","+names+","+firstname+","+othernames+","+maidensurname+","+gender+","+dobtext+","+pob+","+individualstatus+","+birthorder+","+motherid+","+fatherid+","+spouseid+","+domtext+","+pom+","+childrencount+","+siblingscount+","+contactperson+","+contactdetails
 
     window.open("http://127.0.0.1:8080/done.html?mydata=" + alldetails,"_self");
     //window.open("done.html?mydata=" + alldetails,"_self");
@@ -177,4 +184,31 @@ function displaySpouseSelect()
   {
     document.getElementById("spousedropdown").appendChild(spouseselect)
   }
+}
+
+motherselect.onchange = (ev) =>
+{
+  let selecetedIndex = motherselect.selectedIndex;
+  let selectedOption = motherselect.options[selecetedIndex];
+  document.getElementById('motherid').innerText = selectedOption.value;
+  document.getElementById('mother').value = selectedOption.text;
+  document.getElementById("motherdropdown").removeChild(document.getElementById("motherdropdown").childNodes[0]);
+}
+
+fatherselect.onchange = (ev) =>
+{
+  let selecetedIndex = fatherselect.selectedIndex;
+  let selectedOption = fatherselect.options[selecetedIndex];
+  document.getElementById('fatherid').innerText = selectedOption.value;
+  document.getElementById('father').value = selectedOption.text;
+  document.getElementById("fatherdropdown").removeChild(document.getElementById("fatherdropdown").childNodes[0]);
+}
+
+spouseselect.onchange = (ev) =>
+{
+  let selecetedIndex = spouseselect.selectedIndex;
+  let selectedOption = spouseselect.options[selecetedIndex];
+  document.getElementById('spouseid').innerText = selectedOption.value;
+  document.getElementById('spouse').value = selectedOption.text;
+  document.getElementById("spousedropdown").removeChild(document.getElementById("spousedropdown").childNodes[0]);
 }
