@@ -263,7 +263,6 @@ function filterBy()
   //dikokomane
   document.getElementById("h3" + "dikokomane").innerText = "Dikokomane tsa ga "
 
-
   countindividuals = 0
 
   var inputText = document.getElementById("filterText").value

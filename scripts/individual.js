@@ -122,8 +122,8 @@ function SaveDetailsToFIle()
     names = firstname+" "+othernames+" "+maidensurname+" "+firstname
     alldetails = individualid+","+names+","+firstname+","+othernames+","+maidensurname+","+gender+","+dobtext+","+pob+","+individualstatus+","+birthorder+","+motherid+","+fatherid+","+spouseid+","+domtext+","+pom+","+childrencount+","+siblingscount+","+contactperson+","+contactdetails
 
-    window.open("http://127.0.0.1:8080/done.html?mydata=" + alldetails,"_self");
-    //window.open("done.html?mydata=" + alldetails,"_self");
+   // window.open("http://127.0.0.1:8080/done.html?mydata=" + alldetails,"_self");
+    window.open("done.html?mydata=" + alldetails,"_self");
     
 }
 
