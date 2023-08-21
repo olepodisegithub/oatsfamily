@@ -109,6 +109,45 @@ function displayElement(families,displayelement,countlevel,displayviewlink)
     }
 }
 
+document.getElementById("newindividual").addEventListener("click", function(event)
+{
+  if (document.getElementById("filterText").value == "")
+  {
+    
+  }
+  else
+  {
+    clearSessionDetails()
+    window.open("Individual.html","_self");
+  }
+})
+
+function clearSessionDetails()
+{
+  sessionStorage.setItem("IndividualID", "")
+  sessionStorage.setItem("Name", "")
+  sessionStorage.setItem("FirstName", "")
+  sessionStorage.setItem("OtherNames", "")
+  sessionStorage.setItem("MaidenSurname", "")
+  sessionStorage.setItem("Gender", "")
+  sessionStorage.setItem("DateOfBirth", "")
+  sessionStorage.setItem("PlaceOfBirth", "")
+  sessionStorage.setItem("IndividualStatus", "")
+  sessionStorage.setItem("BirthOrder", "")
+  sessionStorage.setItem("MotherID", "")
+  sessionStorage.setItem("FatherID", "")
+  sessionStorage.setItem("SpouseID", "")
+  sessionStorage.setItem("DateOfMarriage", "")
+  sessionStorage.setItem("PlaceOfMarriage", "")
+  sessionStorage.setItem("ChildrenCount", "")
+  sessionStorage.setItem("SiblingsCount", "")
+  sessionStorage.setItem("ContactPerson", "")
+  sessionStorage.setItem("ContactDetails", "")
+  sessionStorage.setItem("MotherName", "")
+  sessionStorage.setItem("FatherName", "")
+  sessionStorage.setItem("SpouseName", "")
+}
+
 function saveSessionDetails(individualid)
 {
 
@@ -266,8 +305,15 @@ function filterBy()
   countindividuals = 0
 
   var inputText = document.getElementById("filterText").value
-  console.log(inputText)
-  displayElement(listoffamilies.filter(family => String(family.FirstName.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.OtherNames.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase()) || String(family.MaidenSurname.toLocaleLowerCase()).includes(inputText.toLocaleLowerCase())),"families","","Yes")
+  var searches = inputText.split(" ")
+  if(searches.length = 2)
+  {
+    displayElement(listoffamilies.filter(family => String(family.Name.toLocaleLowerCase()).includes(searches[0].toLocaleLowerCase()) && String(family.Name.toLocaleLowerCase()).includes(searches[1].toLocaleLowerCase())),"families","","Yes")  
+  }
+  else if(searches.length = 1)
+  {
+    displayElement(listoffamilies.filter(family => String(family.Name.toLocaleLowerCase()).includes(searches[0].toLocaleLowerCase())),"families","","Yes")  
+  }
 }
 
 document.getElementById("filterButton").addEventListener("click", filterBy)
