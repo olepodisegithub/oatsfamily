@@ -100,31 +100,34 @@ document.getElementById("savebutton").addEventListener("click", SaveDetailsToFIl
 
 function SaveDetailsToFIle()
 {
+  if(individualid == "" || individualid == "0")
+  {
+    individualid = getNextIndividualID()
+  }
+  firstname = document.getElementById('firstname').value
+  othernames = document.getElementById('othernames').value
+  maidensurname = document.getElementById('maidensurname').value
+  gender = document.getElementById('gender').value
+  dobtext = document.getElementById('dobtext').value
+  pob = document.getElementById('pob').value
+  individualstatus = document.getElementById('status').value
+  birthorder = document.getElementById('birthorder').value
+  motherid = document.getElementById('motherid').innerText
+  fatherid = document.getElementById('fatherid').innerText
+  spouseid = document.getElementById('spouseid').innerText
+  domtext = document.getElementById('domtext').value
+  pom = document.getElementById('pom').value
+  childrencount = document.getElementById('childrencount').value
+  siblingscount = document.getElementById('siblingscount').value
+  contactperson = document.getElementById('contactperson').value
+  contactdetails = document.getElementById('contactdetails').value
 
-    firstname = document.getElementById('firstname').value
-    othernames = document.getElementById('othernames').value
-    maidensurname = document.getElementById('maidensurname').value
-    gender = document.getElementById('gender').value
-    dobtext = document.getElementById('dobtext').value
-    pob = document.getElementById('pob').value
-    individualstatus = document.getElementById('status').value
-    birthorder = document.getElementById('birthorder').value
-    motherid = document.getElementById('motherid').innerText
-    fatherid = document.getElementById('fatherid').innerText
-    spouseid = document.getElementById('spouseid').innerText
-    domtext = document.getElementById('domtext').value
-    pom = document.getElementById('pom').value
-    childrencount = document.getElementById('childrencount').value
-    siblingscount = document.getElementById('siblingscount').value
-    contactperson = document.getElementById('contactperson').value
-    contactdetails = document.getElementById('contactdetails').value
+  names = firstname+" "+othernames+" "+maidensurname+" "+firstname
+  alldetails = individualid+","+names+","+firstname+","+othernames+","+maidensurname+","+gender+","+dobtext+","+pob+","+individualstatus+","+birthorder+","+motherid+","+fatherid+","+spouseid+","+domtext+","+pom+","+childrencount+","+siblingscount+","+contactperson+","+contactdetails
 
-    names = firstname+" "+othernames+" "+maidensurname+" "+firstname
-    alldetails = individualid+","+names+","+firstname+","+othernames+","+maidensurname+","+gender+","+dobtext+","+pob+","+individualstatus+","+birthorder+","+motherid+","+fatherid+","+spouseid+","+domtext+","+pom+","+childrencount+","+siblingscount+","+contactperson+","+contactdetails
-
-   // window.open("http://127.0.0.1:8080/done.html?mydata=" + alldetails,"_self");
-    window.open("done.html?mydata=" + alldetails,"_self");
-    
+  window.open("http://127.0.0.1:8080/done.html?mydata=" + alldetails,"_self");
+  //window.open("done.html?mydata=" + alldetails,"_self");
+  
 }
 
 function loadDropdownLists()
@@ -211,4 +214,28 @@ spouseselect.onchange = (ev) =>
   document.getElementById('spouseid').innerText = selectedOption.value;
   document.getElementById('spouse').value = selectedOption.text;
   document.getElementById("spousedropdown").removeChild(document.getElementById("spousedropdown").childNodes[0]);
+}
+
+function getNextIndividualID()
+{
+  let nextid = 0
+  try
+  {
+    listofindividuals.map(fam => setID(fam.IndividualID))
+    nextid = nextid + 1
+    return nextid
+  }
+  catch(err) 
+  {
+    return 0
+  }
+
+  function setID(id)
+  {
+    if(id > nextid)
+    {
+      console.log(nextid)
+      nextid = id
+    }
+  }
 }
