@@ -223,7 +223,6 @@ function getNextIndividualID()
   {
     listofindividuals.map(fam => setID(fam.IndividualID))
     nextid = nextid + 1
-    return nextid
   }
   catch(err) 
   {
@@ -238,4 +237,6 @@ function getNextIndividualID()
       nextid = id
     }
   }
+
+  return nextid
 }
