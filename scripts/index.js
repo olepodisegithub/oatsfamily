@@ -59,7 +59,7 @@ fetch('scripts/family.csv')
 function login(myusername,mypassword)
 {
     let returnval = false
-    if (listofindividuals.filter(family => String(family.Username.toLocaleLowerCase()) === myusername.toLocaleLowerCase() && String(family.Password.toLocaleLowerCase()) === mypassword.toLocaleLowerCase()).length > 0)
+    if (listofindividuals.filter(family => String(family.Username) === myusername && String(family.Password) === mypassword).length > 0)
     {
         returnval = true
     }
