@@ -29,23 +29,74 @@ function displayElement(families,displayelement,countlevel,displayviewlink)
         const art = document.createElement("article")
         art.style.backgroundColor = "azure";
 
+        let status = ""
+
         const name = document.createElement("h5")
-        name.innerText = item.Name + ", (" + item.Gender + ")"
+        if(item.Status === "Alive")
+        {
+          status = "A"
+        }
+        else if(item.Status === "Dead")
+        {
+          status = "D"
+        }
+        else
+        {
+          status = " "
+        }
+  
+        name.innerText = item.Name + ", (" + item.Gender + ", " + status + ")"
         name.Name = item.IndividualID
 
         const mother = document.createElement("h6")
         mothername = getIndividualNameByID(item.MotherID)
-        mother.innerText = mothername + ", (Mother)"
+        if(getStatus(item.MotherID) === "Alive")
+        {
+          status = "A"
+        }
+        else if(getStatus(item.MotherID) === "Dead")
+        {
+          status = "D"
+        }
+        else
+        {
+          status = " "
+        }
+        mother.innerText = mothername + ", (Mother, " + status + ")"
         mother.Name = item.MotherID
 
         const father = document.createElement("h6")
         fathername = getIndividualNameByID(item.FatherID)
-        father.innerText = fathername + ", (Father)"
+        if(getStatus(item.FatherID) === "Alive")
+        {
+          status = "A"
+        }
+        else if(getStatus(item.FatherID) === "Dead")
+        {
+          status = "D"
+        }
+        else
+        {
+          status = " "
+        }
+        father.innerText = fathername + ", (Father, " + status + ")"
         father.Name = item.FatherID
 
         const spouse = document.createElement("h6")
         spousename = getIndividualNameByID(item.SpouseID)
-        spouse.innerText = spousename + ", (Spouse)"
+        if(getStatus(item.SpouseID) === "Alive")
+        {
+          status = "A"
+        }
+        else if(getStatus(item.SpouseID) === "Dead")
+        {
+          status = "D"
+        }
+        else
+        {
+          status = " "
+        }
+        spouse.innerText = spousename + ", (Spouse, " + status + ")"
         spouse.Name = item.SpouseID
 
         const level = document.createElement("level")
@@ -327,67 +378,55 @@ function displayFamilyDetails(searchid)
 
   //individual
   filterIndividual(searchid,"individual","Nna")
-  document.getElementById("h3" + "individual").innerText = "Nna"
 
   myname = getIndividualNameByID(indid)
+
   //spouse
   filterSpouse(spouseid,"spouse","Mosadi/ Monna wa ga " + myname)
-  document.getElementById("h3" + "spouse").innerText = "Mosadi/ Monna wa ga " + myname 
-
+  
   //his or her children
   countindividuals = 0
   filterChildren(indid,"children","Bana ba ga " + myname)
-  document.getElementById("h3" + "children").innerText = "Bana ba ga " + myname + " (" + countindividuals + ")"
-
+  
   //parents
   filterParents(motherid,fatherid,"parents","Batsadi ba ga " + myname)
-  document.getElementById("h3" + "parents").innerText = "Batsadi ba ga " + myname
-
+  
   //siblings
   countindividuals = 0
   filterSiblings(motherid,fatherid,indid,"siblings","Ba tsalwa le " + myname)
-  document.getElementById("h3" + "siblings").innerText = "Ba tsalwa le " + myname + " (" + countindividuals + ")"
-
+  
   //mmemogolo
   countindividuals = 0
   filterMmemogolo(motherid,"mmemogolo","Mmaagwe mogolo " + myname)
-  document.getElementById("h3" + "mmemogolo").innerText = "Mmaagwe mogolo " + myname + " (" + countindividuals + ")"
-
+  
   //rremogolo
   countindividuals = 0
   filterRremogolo(fatherid,"rremogolo","Rraagwe mogolo " + myname)
-  document.getElementById("h3" + "rremogolo").innerText = "Rraagwe mogolo " + myname + " (" + countindividuals + ")"
-
+  
   //mmangwane
   countindividuals = 0
   filterMmangwane(motherid,"mmangwane","Mmangwanaagwe " + myname)
-  document.getElementById("h3" + "mmangwane").innerText = "Mmangwanaagwe " + myname + " (" + countindividuals + ")"
-
+  
   //rrangwane
   countindividuals = 0
   filterRrangwane(fatherid,"rrangwane","Rrangwanaagwe " + myname)
-  document.getElementById("h3" + "rrangwane").innerText = "Rrangwanaagwe " + myname + " (" + countindividuals + ")"
-
+  
   //malome
   countindividuals = 0
   filterMalome(getMotherID(motherid),getFatherID(motherid),motherid,"malome","Malomaagwe " + myname)
-  document.getElementById("h3" + "malome").innerText = "Malomaagwe " + myname + " (" + countindividuals + ")"
-
+  
   //rakgadi
   countindividuals = 0
   filterRakgadi(getMotherID(fatherid),getFatherID(fatherid),fatherid,"rakgadi","Rakgadiagwe " + myname)
-  document.getElementById("h3" + "rakgadi").innerText = "Rakgadiagwe " + myname + " (" + countindividuals + ")"
-
+  
   //setlogolo
   countindividuals = 0
   filterSetlogolo(motherid,fatherid,indid,"setlogolo","Setlogolo sa ga " + myname)
-  document.getElementById("h3" + "setlogolo").innerText = "Setlogolo sa ga " + myname + " (" + countindividuals + ")"
-
+  
   //ntsalae
   countindividuals = 0
   filterNtsalae(motherid,fatherid,indid,"ntsalae","Ntsalae " + myname)
-  document.getElementById("h3" + "ntsalae").innerText = "Ntsalae " + myname + " (" + countindividuals + ")"
-
+  
   //nkukuntatemogolo
   countindividuals = 0
   proceed = false
@@ -512,243 +551,288 @@ function addIndividualIDToString(item)
 
 function filterNtsalae(mid,fid,myid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
 
   if(mid > 0 && fid > 0)
   {
     let siblings = listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),element,"","Yes"))
   }
   else if(mid > 0)
   {
     let siblings = listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),element,"","Yes"))
   }
   else if(fid > 0)
   {
     let siblings = listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),element,"","Yes"))
   }
+  document.getElementById("h3" + "ntsalae").innerText = displaytext + " (" + countindividuals + ")"
 }
 
 function filterSetlogolo(mid,fid,myid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
   
   if(mid > 0 && fid > 0)
   {
     let siblings = listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),element,"","Yes"))
   }
   else if(mid > 0)
   {
     let siblings = listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),element,"","Yes"))
   }
   else if(fid > 0)
   {
     let siblings = listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female")
-    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),divelement,"","Yes"))
+    siblings.map(fam => displayElement(listoffamilies.filter(family => family.MotherID === fam.IndividualID || family.FatherID === fam.IndividualID),element,"","Yes"))
   }
+  document.getElementById("h3" + "setlogolo").innerText = displaytext + " (" + countindividuals + ")"
+  
 }
 
 function filterRakgadi(mid,fid,myid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
+
+  let listRakgadi = []
   
   if(mid > 0 && fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement,"","Yes")
+    listRakgadi =listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female")
   }
   else if(mid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement,"","Yes")
+    listRakgadi =listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female")
   }
   else if(fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female"),divelement,"","Yes")
+    listRakgadi =listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Female")
   }
+  displayElement(listRakgadi,element,"","Yes")
+  document.getElementById("h3" + "rakgadi").innerText = displaytext + " (" + countindividuals + ")"
 }
 
 function filterMalome(mid,fid,myid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
+
+  let listMalome = []
   
   if(mid > 0 && fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male"),divelement,"","Yes")
+    listMalome =listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male")
   }
   else if(mid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male"),divelement,"","Yes")
+    listMalome =listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male")
   }
   else if(fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male"),divelement,"","Yes")
+    listMalome =listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid).filter(family => family.Gender === "Male")
   }
+  displayElement(listMalome,element,"","Yes")
+  document.getElementById("h3" + "malome").innerText = displaytext + " (" + countindividuals + ")"
+
 }
 
 function filterRrangwane(fid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
   
   let fathermotherid = getMotherID(fid)
   let fatherfatherid = getFatherID(fid)
+
+  let listRrangwane = []
 
   if(fid > 0)
   {
     if(fathermotherid > 0 && fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid) || family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid)),divelement,"","Yes")
+      listRrangwane = listoffamilies.filter(family => family.MotherID === getMotherID(fid) || family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid))
     }
     else if(fathermotherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid)),divelement,"","Yes")
+      listRrangwane = listoffamilies.filter(family => family.MotherID === getMotherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid))
     }
     else if(fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid)),divelement,"","Yes")
+      listRrangwane = listoffamilies.filter(family => family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder > getFamilyOrder(fid))
     }
+    displayElement(listRrangwane,element,"","Yes")
+    document.getElementById("h3" + "rrangwane").innerText = displaytext + " (" + countindividuals + ")"
+
   }
 }
 
 function filterMmangwane(mid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
   
   let fathermotherid = getMotherID(mid)
   let fatherfatherid = getFatherID(mid)
+
+  let listMmangwane = []
 
   if(mid > 0)
   {
     if(fathermotherid > 0 && fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid) || family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid)),divelement,"","Yes")
+      listMmangwane = listoffamilies.filter(family => family.MotherID === getMotherID(mid) || family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid))
     }
     else if(fathermotherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid)),divelement,"","Yes")
+      listMmangwane = listoffamilies.filter(family => family.MotherID === getMotherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid))
     }
     else if(fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid)),divelement,"","Yes")
+      listMmangwane = listoffamilies.filter(family => family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder > getFamilyOrder(mid))
     }
+    displayElement(listMmangwane,element,"","Yes")
+    document.getElementById("h3" + "mmangwane").innerText = displaytext + " (" + countindividuals + ")"
+
   }
 }
 
 function filterRremogolo(fid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
   
   let fathermotherid = getMotherID(fid)
   let fatherfatherid = getFatherID(fid)
+
+  let listRremogolo = []
 
   if(fid > 0)
   {
     if(fathermotherid > 0 && fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid) || family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid)),divelement,"","Yes")
+      listRremogolo = listoffamilies.filter(family => family.MotherID === getMotherID(fid) || family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid))
     }
     else if(fathermotherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid)),divelement,"","Yes")
+      listRremogolo = listoffamilies.filter(family => family.MotherID === getMotherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid))
     }
     else if(fatherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid)),divelement,"","Yes")
+      listRremogolo = listoffamilies.filter(family => family.FatherID === getFatherID(fid)).filter(family => family.IndividualID !== fid).filter(family => family.Gender === "Male").filter(family => family.FamilyOrder < getFamilyOrder(fid))
     }
+
+    displayElement(listRremogolo,element,"","Yes")
+    document.getElementById("h3" + "rremogolo").innerText = displaytext + " (" + countindividuals + ")"
+
   }
 }
 
 function filterMmemogolo(mid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
   
   let mothermotherid = getMotherID(mid)
   let motherfatherid = getFatherID(mid)
+
+  let listMmemogolo = []
 
   if(mid > 0)
   {
     if(mothermotherid > 0 && motherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid) || family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid)),divelement,"","Yes")
+      listMmemogolo = listoffamilies.filter(family => family.MotherID === mothermotherid || family.FatherID === motherfatherid).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid))
     }
     else if(mothermotherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.MotherID === getMotherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid)),divelement,"","Yes")
+      listMmemogolo = listoffamilies.filter(family => family.MotherID === mothermotherid).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid))
     }
     else if(motherfatherid > 0)
     {
-      displayElement(listoffamilies.filter(family => family.FatherID === getFatherID(mid)).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid)),divelement,"","Yes")
+      listMmemogolo = listoffamilies.filter(family => family.FatherID === motherfatherid).filter(family => family.IndividualID !== mid).filter(family => family.Gender === "Female").filter(family => family.FamilyOrder < getFamilyOrder(mid))
     }
+
+    displayElement(listMmemogolo,element,"","Yes")
+    document.getElementById("h3" + "mmemogolo").innerText = displaytext + " (" + countindividuals + ")"
+
   }
 }
 
 function filterSiblings(mid,fid,myid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
+
+  let listSiblings = []
 
   if(mid > 0 && fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid),divelement,"","Yes")
+    listSiblings = listoffamilies.filter(family => family.MotherID === mid || family.FatherID === fid).filter(family => family.IndividualID !== myid)
   }
   else if(mid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid),divelement,"","Yes")
+    listSiblings = listoffamilies.filter(family => family.MotherID === mid).filter(family => family.IndividualID !== myid)
   }
   else if(fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid),divelement,"","Yes")
+    listSiblings = listoffamilies.filter(family => family.FatherID === fid).filter(family => family.IndividualID !== myid)
   }
+
+  displayElement(listSiblings,element,"","Yes")
+  document.getElementById("h3" + "siblings").innerText = displaytext + " (" + countindividuals + ")"
+
 }
 
 function filterParents(mid,fid,element,displaytext)
 {
-  let divelement = element
-  reset(divelement)
+  reset(element)
+
+  let listParents = []
 
   if (mid > 0 && fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.IndividualID === mid || family.IndividualID === fid),divelement,"","Yes")
+    listParents = listoffamilies.filter(family => family.IndividualID === mid || family.IndividualID === fid)
   }
   else if (mid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.IndividualID === mid),divelement,"","Yes")
+    listParents = listoffamilies.filter(family => family.IndividualID === mid)
   }
   else if (fid > 0)
   {
-    displayElement(listoffamilies.filter(family => family.IndividualID === fid),divelement,"","Yes")
+    listParents = listoffamilies.filter(family => family.IndividualID === fid)
   }
+
+  displayElement(listParents,element,"","Yes")
+  document.getElementById("h3" + "parents").innerText = displaytext
+
 }
 
 function filterChildren(id,element,displaytext)
 {
   reset(element)
-  let arraylist = listoffamilies.filter(family => family.MotherID === id || family.FatherID === id)
-  displayElement(arraylist,element,"","Yes")
+  let listChildren = []
+  listChildren = listoffamilies.filter(family => family.MotherID === id || family.FatherID === id)
+  
+  displayElement(listChildren,element,"","Yes")
+  document.getElementById("h3" + "children").innerText = displaytext + " (" + countindividuals + ")"
 }
 
 function filterSpouse(id,element,displaytext)
 {
   reset(element)
-   
-  displayElement(listoffamilies.filter(family => family.IndividualID === id),element,"","Yes")
+  let listSpouse = []
+  listSpouse = listoffamilies.filter(family => family.IndividualID === id)
+
+  displayElement(listSpouse,element,"","Yes")
+  document.getElementById("h3" + "spouse").innerText = displaytext 
 }
 
 function filterIndividual(namesearch,element,displaytext)
 {
   reset(element)
+  let listIndividual = []
+  listIndividual = listoffamilies.filter(family => String(family.IndividualID.toLocaleLowerCase()) == namesearch.toLocaleLowerCase())
   
-  displayElement(listoffamilies.filter(family => String(family.IndividualID.toLocaleLowerCase()) == namesearch.toLocaleLowerCase()),element,"","Yes")
+  displayElement(listIndividual,element,"","Yes")
+  document.getElementById("h3" + "individual").innerText = displaytext
 }
 
 function getIndividualNameByID(id)
@@ -802,9 +886,23 @@ function getMotherID(id)
 
 function getFamilyOrder(id)
 {
+  
   try
   {
     return listoffamilies.filter(family => family.IndividualID === id)[0].FamilyOrder
+  }
+  catch(err) 
+  {
+    return 0
+  }
+}
+
+function getStatus(id)
+{
+  
+  try
+  {
+    return listoffamilies.filter(family => family.IndividualID === id)[0].Status
   }
   catch(err) 
   {
